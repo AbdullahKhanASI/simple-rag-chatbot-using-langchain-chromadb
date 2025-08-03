@@ -100,6 +100,16 @@ The `.env` file supports the following variables:
 | `BATCH_SIZE` | Batch size for processing | `100` |
 | `RETRIEVAL_K` | Number of chunks to retrieve | `4` |
 
+### Langsmith Configuration (Optional)
+
+For performance monitoring and model usage tracking:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `LANGCHAIN_TRACING_V2` | Enable Langsmith tracing | `false` |
+| `LANGCHAIN_API_KEY` | Your Langsmith API key | - |
+| `LANGCHAIN_PROJECT` | Project name in Langsmith | `simple-rag-chatbot` |
+
 ## Usage
 
 ### Document Ingestion
@@ -236,12 +246,72 @@ This checks:
 - `chat.log`: Chat interaction logs
 - Both scripts log to console and files
 
+## Performance Monitoring with Langsmith
+
+The system includes integrated Langsmith tracking for comprehensive monitoring of model usage, performance metrics, and debugging capabilities.
+
+### Tracked Operations
+
+1. **Document Ingestion (`ingest.py`)**:
+   - `@traceable(name="document_ingestion")`: Main ingestion process
+   - `@traceable(name="load_and_split_pdf")`: Individual PDF processing
+   - Metrics: Total ingestion time, embedding generation time, batch processing times
+
+2. **Chat Interface (`chat.py`)**:
+   - `@traceable(name="initialize_vectorstore")`: Vector store loading
+   - `@traceable(name="process_query")`: Query processing and response generation
+   - Metrics: Vector store load time, query response time, retrieval performance
+
+### Performance Metrics Logged
+
+- **Ingestion Process**:
+  - PDF loading and splitting time per document
+  - Embedding generation time per batch
+  - Total ingestion time and document count
+  - Individual batch processing times
+
+- **Chat Queries**:
+  - Vector store initialization time
+  - Query processing and response generation time
+  - Retrieved document count and relevance scores
+  - OpenAI API call latencies
+
+### Setup Instructions
+
+1. **Create Langsmith Account**:
+   ```bash
+   # Visit https://smith.langchain.com/ and sign up
+   ```
+
+2. **Configure Environment**:
+   ```bash
+   # Add to your .env file
+   LANGCHAIN_TRACING_V2=true
+   LANGCHAIN_API_KEY=your_langsmith_api_key_here
+   LANGCHAIN_PROJECT=simple-rag-chatbot
+   ```
+
+3. **View Traces**:
+   - Access your Langsmith dashboard
+   - Monitor real-time performance metrics
+   - Debug failed operations with detailed traces
+   - Analyze cost and usage patterns
+
+### Benefits
+
+- **Cost Tracking**: Monitor OpenAI API usage and costs
+- **Performance Optimization**: Identify bottlenecks in ingestion and queries
+- **Error Debugging**: Detailed traces for failed operations
+- **Usage Analytics**: Understand user interaction patterns
+- **Model Comparison**: A/B test different models and configurations
+
 ## Performance Considerations
 
 - **Chunk Size**: Larger chunks provide more context but slower retrieval
 - **Retrieval K**: More chunks provide better context but increase latency
 - **Batch Size**: Larger batches use more memory but faster ingestion
 - **Model Choice**: `gpt-4o-mini` is faster and cheaper than `gpt-4o`
+- **Langsmith Overhead**: Minimal performance impact (~1-2% latency increase)
 
 ## Security Notes
 
@@ -289,6 +359,7 @@ Core dependencies in `requirements.txt`:
 - `openai==1.7.2`: OpenAI API client
 - `pypdf==3.17.3`: PDF processing
 - `python-dotenv==1.0.0`: Environment variables
+- `langsmith==0.0.87`: Performance monitoring and tracing
 - `tiktoken==0.5.2`: Token counting
 
 ## Performance Targets
@@ -300,6 +371,7 @@ Core dependencies in `requirements.txt`:
 
 ## Future Enhancements
 
+- [x] **Langsmith Integration**: Performance monitoring and model usage tracking
 - [ ] Web UI with Streamlit
 - [ ] Support for more document types (Word, HTML, Markdown)
 - [ ] Advanced chunking strategies

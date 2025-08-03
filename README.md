@@ -10,6 +10,7 @@ A lightweight Retrieval-Augmented Generation (RAG) chatbot that allows you to qu
 - 📚 **Source Citations**: Provides page references for all answers
 - ⚡ **Fast Performance**: Sub-3-second response times
 - 🔒 **Privacy-First**: Local vector database storage
+- 📊 **Performance Monitoring**: Langsmith integration for tracking model usage and execution times
 - 🛠️ **Easy Setup**: One-command installation and configuration
 
 ## 🚀 Quick Start
@@ -144,6 +145,29 @@ Edit the `.env` file to customize behavior:
 | `CHUNK_SIZE` | Text chunk size for processing | `1000` |
 | `CHUNK_OVERLAP` | Overlap between text chunks | `200` |
 | `RETRIEVAL_K` | Number of relevant chunks to retrieve | `4` |
+
+### 📊 Langsmith Monitoring (Optional)
+
+Enable performance tracking and model usage monitoring:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `LANGCHAIN_TRACING_V2` | Enable Langsmith tracing | `false` |
+| `LANGCHAIN_API_KEY` | Your Langsmith API key | - |
+| `LANGCHAIN_PROJECT` | Project name in Langsmith | `simple-rag-chatbot` |
+
+**Benefits of Langsmith Integration:**
+- 📈 Track model usage and costs
+- ⏱️ Monitor response times and performance
+- 🔍 Debug and optimize retrieval quality
+- 📊 Analyze embedding generation efficiency
+- 🚨 Get alerts for errors and failures
+
+To enable monitoring:
+1. Sign up at [Langsmith](https://smith.langchain.com/)
+2. Get your API key from the dashboard
+3. Add the configuration to your `.env` file
+4. Restart your application
 
 ## 🛠️ Available Commands
 
@@ -294,6 +318,7 @@ make test
 
 ## 📋 Roadmap
 
+- [x] **Langsmith Integration**: Performance monitoring and model usage tracking
 - [ ] Web interface with Streamlit
 - [ ] Support for Word documents, HTML, and Markdown
 - [ ] Advanced chunking strategies
