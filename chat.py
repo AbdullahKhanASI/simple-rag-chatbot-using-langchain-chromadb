@@ -18,6 +18,7 @@ from langchain_community.vectorstores import Chroma
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 from langchain.schema import BaseRetriever
+from langsmith import traceable
 
 
 def setup_logging():
@@ -39,6 +40,15 @@ def load_environment():
     if missing_vars:
         raise ValueError(f"Missing required environment variables: {missing_vars}")
 
+    # Configure LangSmith if enabled
+    if os.getenv("LANGCHAIN_TRACING_V2", "false").lower() == "true":
+        os.environ["LANGCHAIN_TRACING_V2"] = "true"
+        if os.getenv("LANGCHAIN_API_KEY"):
+            os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+        if os.getenv("LANGCHAIN_PROJECT"):
+            os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
+        logging.info("LangSmith tracing enabled for chat interface")
+
     return {
         "openai_api_key": os.getenv("OPENAI_API_KEY"),
         "embedding_model": os.getenv("EMBEDDING_MODEL", "text-embedding-3-small"),
@@ -48,8 +58,10 @@ def load_environment():
     }
 
 
+@traceable(name="initialize_vectorstore")
 def initialize_vectorstore(config: Dict[str, Any]) -> Chroma:
     """Initialize and load the ChromaDB vector store."""
+    start_time = time.time()
     persist_directory = config["persist_dir"]
 
     if not os.path.exists(persist_directory):
@@ -78,7 +90,8 @@ def initialize_vectorstore(config: Dict[str, Any]) -> Chroma:
             "Please run ingest.py first to populate the database."
         )
 
-    logging.info(f"Loaded vector store with {count} document chunks")
+    load_time = time.time() - start_time
+    logging.info(f"Loaded vector store with {count} document chunks in {load_time:.2f}s")
     return vectorstore
 
 
@@ -157,6 +170,30 @@ def get_user_input() -> str:
         return "exit"
 
 
+@traceable(name="process_query")
+def process_query(qa_chain: ConversationalRetrievalChain, user_input: str) -> Tuple[str, str, float]:
+    """Process a user query through the RAG chain with tracking."""
+    start_time = time.time()
+
+    # Get response from the chain
+    result = qa_chain(
+        {
+            "question": user_input,
+            "chat_history": [],  # Memory is handled internally
+        }
+    )
+
+    end_time = time.time()
+    response_time = end_time - start_time
+
+    # Extract answer and sources
+    answer = result.get("answer", "I couldn't generate an answer.")
+    source_docs = result.get("source_documents", [])
+    sources = format_sources(source_docs)
+
+    return answer, sources, response_time
+
+
 def print_answer(answer: str, sources: str, response_time: float):
     """Print the chatbot's answer with formatting."""
     print(f"\n🤖 RAGbot: {answer}")
@@ -196,23 +233,8 @@ def chat_loop():
 
             # Process the query
             try:
-                start_time = time.time()
-
-                # Get response from the chain
-                result = qa_chain(
-                    {
-                        "question": user_input,
-                        "chat_history": [],  # Memory is handled internally
-                    }
-                )
-
-                end_time = time.time()
-                response_time = end_time - start_time
-
-                # Extract answer and sources
-                answer = result.get("answer", "I couldn't generate an answer.")
-                source_docs = result.get("source_documents", [])
-                sources = format_sources(source_docs)
+                # Process query with LangSmith tracking
+                answer, sources, response_time = process_query(qa_chain, user_input)
 
                 # Print the response
                 print_answer(answer, sources, response_time)
