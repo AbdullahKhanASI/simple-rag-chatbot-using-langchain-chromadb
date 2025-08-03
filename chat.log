@@ -14,3 +14,18 @@
 2025-08-04 00:13:51,070 - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
 2025-08-04 00:13:52,583 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
 2025-08-04 00:13:52,820 - INFO - Query processed in 5.18s
+2025-08-04 03:50:22,938 - INFO - Starting RAG Chatbot...
+2025-08-04 03:50:22,939 - INFO - LangSmith tracing enabled for chat interface
+2025-08-04 03:50:22,939 - INFO - Environment configuration loaded
+2025-08-04 03:50:23,353 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-08-04 03:50:23,469 - INFO - Loaded vector store with 279 document chunks in 0.51s
+2025-08-04 03:50:23,481 - INFO - Conversational retrieval chain initialized
+2025-08-04 03:52:46,037 - INFO - Starting RAG Chatbot...
+2025-08-04 03:52:46,038 - INFO - LangSmith tracing enabled for chat interface
+2025-08-04 03:52:46,038 - INFO - Environment configuration loaded
+2025-08-04 03:52:46,434 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-08-04 03:52:46,563 - INFO - Loaded vector store with 372 document chunks in 0.49s
+2025-08-04 03:52:46,575 - INFO - Conversational retrieval chain initialized
+2025-08-04 03:52:51,730 - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-08-04 03:52:53,245 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-04 03:52:53,391 - INFO - Query processed in 2.87s

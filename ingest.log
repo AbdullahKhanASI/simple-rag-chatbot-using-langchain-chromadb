@@ -32,3 +32,45 @@
 2025-08-04 00:13:31,734 - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
 2025-08-04 00:13:34,034 - INFO - Successfully ingested 93 documents into ChromaDB
 2025-08-04 00:13:34,035 - INFO - Database persisted to: db
+2025-08-04 03:49:56,065 - INFO - Starting document ingestion process...
+2025-08-04 03:49:56,066 - INFO - LangSmith tracing enabled
+2025-08-04 03:49:56,066 - INFO - Environment configuration loaded successfully
+2025-08-04 03:49:56,066 - INFO - Found 3 PDF files in docs/
+2025-08-04 03:49:56,066 - INFO - Processing Yahya_Khan_CV_v2.pdf...
+2025-08-04 03:49:56,111 - INFO - Split Yahya_Khan_CV_v2.pdf into 1 chunks in 0.04s
+2025-08-04 03:49:56,111 - INFO - Processing Yahya_Khan_CV.pdf...
+2025-08-04 03:49:56,115 - INFO - Split Yahya_Khan_CV.pdf into 2 chunks in 0.00s
+2025-08-04 03:49:56,115 - INFO - Processing A Comprehensive Plan to Control Type 2 Diabetes Naturally.pdf...
+2025-08-04 03:49:56,504 - INFO - Split A Comprehensive Plan to Control Type 2 Diabetes Naturally.pdf into 90 chunks in 0.39s
+2025-08-04 03:49:56,504 - INFO - Total documents to process: 93
+2025-08-04 03:49:56,647 - INFO - Embeddings model initialized
+2025-08-04 03:49:56,647 - INFO - Processing 1 batches...
+2025-08-04 03:49:56,648 - INFO - Processing batch 1/1 (93 documents)...
+2025-08-04 03:49:56,930 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-08-04 03:50:01,420 - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-08-04 03:50:03,178 - INFO - Batch 1 processed in 6.53s
+2025-08-04 03:50:03,179 - INFO - Successfully ingested 93 documents into ChromaDB
+2025-08-04 03:50:03,179 - INFO - Total embedding time: 6.53s
+2025-08-04 03:50:03,179 - INFO - Total ingestion time: 7.11s
+2025-08-04 03:50:03,179 - INFO - Database persisted to: db
+2025-08-04 03:52:31,983 - INFO - Starting document ingestion process...
+2025-08-04 03:52:31,984 - INFO - LangSmith tracing enabled
+2025-08-04 03:52:31,984 - INFO - Environment configuration loaded successfully
+2025-08-04 03:52:31,984 - INFO - Found 3 PDF files in docs/
+2025-08-04 03:52:31,984 - INFO - Processing Yahya_Khan_CV_v2.pdf...
+2025-08-04 03:52:32,026 - INFO - Split Yahya_Khan_CV_v2.pdf into 1 chunks in 0.04s
+2025-08-04 03:52:32,026 - INFO - Processing Yahya_Khan_CV.pdf...
+2025-08-04 03:52:32,030 - INFO - Split Yahya_Khan_CV.pdf into 2 chunks in 0.00s
+2025-08-04 03:52:32,030 - INFO - Processing A Comprehensive Plan to Control Type 2 Diabetes Naturally.pdf...
+2025-08-04 03:52:32,414 - INFO - Split A Comprehensive Plan to Control Type 2 Diabetes Naturally.pdf into 90 chunks in 0.38s
+2025-08-04 03:52:32,414 - INFO - Total documents to process: 93
+2025-08-04 03:52:32,540 - INFO - Embeddings model initialized
+2025-08-04 03:52:32,540 - INFO - Processing 1 batches...
+2025-08-04 03:52:32,540 - INFO - Processing batch 1/1 (93 documents)...
+2025-08-04 03:52:32,799 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-08-04 03:52:35,683 - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-08-04 03:52:37,600 - INFO - Batch 1 processed in 5.06s
+2025-08-04 03:52:37,601 - INFO - Successfully ingested 93 documents into ChromaDB
+2025-08-04 03:52:37,601 - INFO - Total embedding time: 5.06s
+2025-08-04 03:52:37,601 - INFO - Total ingestion time: 5.62s
+2025-08-04 03:52:37,601 - INFO - Database persisted to: db
