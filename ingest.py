@@ -8,6 +8,7 @@ generates embeddings, and stores them in a ChromaDB collection for retrieval.
 
 import os
 import logging
+import time
 from pathlib import Path
 from typing import List, Dict, Any
 from dotenv import load_dotenv
@@ -17,6 +18,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.schema import Document
+from langsmith import traceable
 
 
 def setup_logging():
@@ -37,6 +39,15 @@ def load_environment():
 
     if missing_vars:
         raise ValueError(f"Missing required environment variables: {missing_vars}")
+
+    # Configure LangSmith if enabled
+    if os.getenv("LANGCHAIN_TRACING_V2", "false").lower() == "true":
+        os.environ["LANGCHAIN_TRACING_V2"] = "true"
+        if os.getenv("LANGCHAIN_API_KEY"):
+            os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+        if os.getenv("LANGCHAIN_PROJECT"):
+            os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
+        logging.info("LangSmith tracing enabled")
 
     return {
         "openai_api_key": os.getenv("OPENAI_API_KEY"),
@@ -60,11 +71,13 @@ def find_pdf_files(docs_dir: str = "docs") -> List[Path]:
     return pdf_files
 
 
+@traceable(name="load_and_split_pdf")
 def load_and_split_pdf(
     pdf_path: Path, text_splitter: RecursiveCharacterTextSplitter
 ) -> List[Document]:
     """Load a PDF file and split it into chunks."""
     try:
+        start_time = time.time()
         logging.info(f"Processing {pdf_path.name}...")
         loader = PyPDFLoader(str(pdf_path))
         pages = loader.load_and_split(text_splitter)
@@ -80,7 +93,8 @@ def load_and_split_pdf(
                 }
             )
 
-        logging.info(f"Split {pdf_path.name} into {len(pages)} chunks")
+        processing_time = time.time() - start_time
+        logging.info(f"Split {pdf_path.name} into {len(pages)} chunks in {processing_time:.2f}s")
         return pages
 
     except Exception as e:
@@ -106,9 +120,11 @@ def process_documents_in_batches(
     return batches
 
 
+@traceable(name="document_ingestion")
 def ingest_documents():
     """Main ingestion function."""
     setup_logging()
+    start_time = time.time()
     logging.info("Starting document ingestion process...")
 
     try:
@@ -156,7 +172,10 @@ def ingest_documents():
 
         # Create or load existing vector store
         vectorstore = None
+        embedding_start_time = time.time()
+        
         for i, batch in enumerate(batches):
+            batch_start_time = time.time()
             logging.info(
                 f"Processing batch {i + 1}/{len(batches)} ({len(batch)} documents)..."
             )
@@ -176,12 +195,21 @@ def ingest_documents():
             else:
                 # Add to existing vector store
                 vectorstore.add_texts(texts=texts, metadatas=metadatas)
+            
+            batch_time = time.time() - batch_start_time
+            logging.info(f"Batch {i + 1} processed in {batch_time:.2f}s")
 
+        embedding_time = time.time() - embedding_start_time
+        
         # Persist the database
         vectorstore.persist()
+        
+        total_time = time.time() - start_time
         logging.info(
             f"Successfully ingested {len(all_documents)} documents into ChromaDB"
         )
+        logging.info(f"Total embedding time: {embedding_time:.2f}s")
+        logging.info(f"Total ingestion time: {total_time:.2f}s")
         logging.info(f"Database persisted to: {persist_directory}")
 
     except Exception as e:
