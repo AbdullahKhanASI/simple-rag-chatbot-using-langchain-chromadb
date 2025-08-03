@@ -1,0 +1,16 @@
+2025-08-04 00:10:27,902 - INFO - Starting RAG Chatbot...
+2025-08-04 00:10:27,903 - INFO - Environment configuration loaded
+2025-08-04 00:10:28,298 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-08-04 00:10:28,460 - INFO - Loaded vector store with 93 document chunks
+2025-08-04 00:10:28,470 - INFO - Conversational retrieval chain initialized
+2025-08-04 00:10:29,559 - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-08-04 00:10:31,011 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-04 00:10:37,008 - INFO - Query processed in 8.54s
+2025-08-04 00:13:40,722 - INFO - Starting RAG Chatbot...
+2025-08-04 00:13:40,723 - INFO - Environment configuration loaded
+2025-08-04 00:13:41,075 - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-08-04 00:13:41,190 - INFO - Loaded vector store with 186 document chunks
+2025-08-04 00:13:41,202 - INFO - Conversational retrieval chain initialized
+2025-08-04 00:13:51,070 - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-08-04 00:13:52,583 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-04 00:13:52,820 - INFO - Query processed in 5.18s
