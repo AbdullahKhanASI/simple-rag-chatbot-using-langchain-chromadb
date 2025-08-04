@@ -24,7 +24,7 @@ A lightweight Retrieval-Augmented Generation (RAG) chatbot that allows you to qu
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/simple-rag-chatbot.git
+   git clone https://github.com/AbdullahKhanASI/simple-rag-chatbot-using-langchain-chromadb.git
    cd simple-rag-chatbot
    ```
 
